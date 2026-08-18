@@ -22,5 +22,31 @@ services:
       timeout: 5s
       retries: 10
 
+  mysql-inventory:
+    image: mysql:8.4
+    container_name: mysql-inventory
+    restart: unless-stopped
+
+    environment:
+      MYSQL_DATABASE: inventory_db
+      MYSQL_USER: inventory_user
+      MYSQL_PASSWORD: inventory_password
+      MYSQL_ROOT_PASSWORD: root_password
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_inventory_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u inventory_user -pinventory_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 volumes:
+
   postgres_order_data:
+
+  mysql_inventory_data:
