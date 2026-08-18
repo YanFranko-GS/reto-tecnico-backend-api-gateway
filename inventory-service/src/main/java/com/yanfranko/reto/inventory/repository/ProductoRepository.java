@@ -1,4 +1,4 @@
-package com.yanfranko.reto.inventory.Repository;
+package com.yanfranko.reto.inventory.repository;
 
 import com.yanfranko.reto.inventory.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
