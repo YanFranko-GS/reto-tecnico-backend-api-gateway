@@ -31,7 +31,8 @@ public class OrderStatusHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderstatusId;
+    @Column(name = "order_status_history_id")
+    private Long orderStatusHistoryId;
 
     // Esto representa el estado que tendra el estado (antes)
     @Enumerated(EnumType.STRING)
