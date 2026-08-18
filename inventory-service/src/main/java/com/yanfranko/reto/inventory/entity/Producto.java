@@ -1,4 +1,4 @@
-package com.yanfranko.reto.inventory.Entity;
+package com.yanfranko.reto.inventory.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

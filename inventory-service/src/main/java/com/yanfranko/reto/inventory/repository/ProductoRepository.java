@@ -1,6 +1,6 @@
 package com.yanfranko.reto.inventory.Repository;
 
-import com.yanfranko.reto.inventory.Entity.Producto;
+import com.yanfranko.reto.inventory.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
