@@ -28,6 +28,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long orderId;
 
     // esto lo estoy poniendo para saber la cantidad que se va a pedir
