@@ -1,0 +1,26 @@
+services:
+
+  postgres-order:
+    image: postgres:17
+    container_name: postgres-order
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: order_user
+      POSTGRES_PASSWORD: order_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U order_user -d order_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_order_data:
