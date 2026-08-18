@@ -1,4 +1,10 @@
 package com.yanfranko.reto.inventory.Repository;
 
-public interface ProductoRepository {
+import com.yanfranko.reto.inventory.Entity.Producto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
+
 }
