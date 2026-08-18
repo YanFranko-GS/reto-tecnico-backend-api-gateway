@@ -1,4 +1,12 @@
 package com.yanfranko.reto.inventory.exception;
 
-public class ErrorResponse {
+import java.time.Instant;
+
+public record ErrorResponse(
+        Instant timestamp,
+        int status,
+        String code,
+        String messege,
+        String traceId
+) {
 }
