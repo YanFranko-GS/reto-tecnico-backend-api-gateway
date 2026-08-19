@@ -32,12 +32,12 @@ public class Order {
     private Long orderId;
 
     // esto lo estoy poniendo para saber la cantidad que se va a pedir
-    @Column(nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
     // eh creado un enum donde contendra todas mis listas de opciones
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(name = "estado", nullable = false, length = 20)
     private OrderStatus estado;
 
     // para cuando se creo -- Se vera a mas detalle en el postman
@@ -49,6 +49,6 @@ public class Order {
     private Instant fechaModificacion;
 
     // Este es el identificador del producto osea lo que se va a solicitar
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @Column(name = "producto_id", nullable = false)
+    private Long productoId;
 }

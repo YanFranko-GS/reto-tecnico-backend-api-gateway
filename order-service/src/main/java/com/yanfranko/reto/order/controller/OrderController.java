@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
@@ -23,43 +25,51 @@ public class OrderController {
 
     // Registrar un nuevo pedido
     @PostMapping
-    public ResponseEntity<OrderResponseDto> createOrder(
+    public Mono<ResponseEntity<OrderResponseDto>> createOrder(
             @Valid @RequestBody CreateOrderRequestDto request
     ) {
-        OrderResponseDto response = orderService.createOrder(request);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(response);
+        return orderService
+                .createOrder(request)
+                .map(response ->
+                        ResponseEntity
+                                .status(HttpStatus.CREATED)
+                                .body(response)
+                );
     }
 
     // Consultar un pedido por su ID
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDto> getOrderById(
+    public Mono<ResponseEntity<OrderResponseDto>> getOrderById(
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(
-                orderService.getOrderById(orderId)
-        );
+        return Mono.fromCallable(() ->
+                        orderService.getOrderById(orderId)
+                )
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(ResponseEntity::ok);
     }
 
     // Consultar el historial de estados de un pedido
     @GetMapping("/{orderId}/history")
-    public ResponseEntity<List<OrderHistoryResponseDto>> getOrderHistory(
+    public Mono<ResponseEntity<List<OrderHistoryResponseDto>>> getOrderHistory(
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(
-                orderService.getOrderHistory(orderId)
-        );
+        return Mono.fromCallable(() ->
+                        orderService.getOrderHistory(orderId)
+                )
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(ResponseEntity::ok);
     }
 
     // Cancelar un pedido
     @PostMapping("/{orderId}/cancel")
-    public ResponseEntity<OrderResponseDto> cancelOrder(
+    public Mono<ResponseEntity<OrderResponseDto>> cancelOrder(
             @PathVariable Long orderId
     ) {
-        return ResponseEntity.ok(
-                orderService.cancelarOrder(orderId)
-        );
+        return Mono.fromCallable(() ->
+                        orderService.cancelarOrder(orderId)
+                )
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(ResponseEntity::ok);
     }
 }
