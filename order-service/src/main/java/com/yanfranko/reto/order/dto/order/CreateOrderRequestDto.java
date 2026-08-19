@@ -12,7 +12,7 @@ public record CreateOrderRequestDto(
 
         @NotNull(message = "La cantidad es obligatoria")
         @Positive(message = "La cantidad debe ser mayor que cero")
-        Integer quantity
+        Integer cantidad
 
 ) {
 }
