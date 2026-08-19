@@ -8,18 +8,18 @@ import java.time.Instant;
 public record OrderHistoryResponseDto(
         Long orderStatusHistoryId,
         OrderStatus previousStatus,
-        OrderStatus newStatus,
-        Instant changedAt,
-        String reason
+        OrderStatus nuevoEstado,
+        Instant fechaModificacion,
+        String razonCambio
 ) {
     // Metodo estático para convertir de Entidad a DTO manteniendo tu estilo
     public static OrderHistoryResponseDto fromEntity(OrderStatusHistory history) {
         return new OrderHistoryResponseDto(
                 history.getOrderStatusHistoryId(),
-                history.getPreviousStatus(),
-                history.getNewStatus(),
-                history.getChangedAt(),
-                history.getReason()
+                history.getPreviousEstado(),
+                history.getNuevoEstado(),
+                history.getFechaModificacion(),
+                history.getRazonCambio()
         );
     }
 }
