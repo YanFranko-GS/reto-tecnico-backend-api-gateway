@@ -38,20 +38,20 @@ public class OrderService {
 
         Order order = Order.builder()
                 .productId(request.productId())
-                .quantity(request.quantity())
-                .status(OrderStatus.PENDING)
-                .createdAt(now)
-                .updatedAt(now)
+                .cantidad(request.cantidad())
+                .estado(OrderStatus.PENDING)
+                .fechaCreacion(now)
+                .fechaModificacion(now)
                 .build();
 
         Order savedOrder = orderRepository.save(order);
 
         OrderStatusHistory history = OrderStatusHistory.builder()
                 .order(savedOrder)
-                .previousStatus(null)
-                .newStatus(OrderStatus.PENDING)
-                .changedAt(now)
-                .reason("El pedido ha sido creado")
+                .previousEstado(null)
+                .nuevoEstado(OrderStatus.PENDING)
+                .fechaModificacion(now)
+                .razonCambio("El pedido ha sido creado")
                 .build();
 
         orderStatusHistoryRepository.save(history);
@@ -89,36 +89,36 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
 
-        if (order.getStatus() == OrderStatus.CANCELLED) {
+        if (order.getEstado() == OrderStatus.CANCELLED) {
             throw new InvalidOrderTransitionException(
-                    order.getStatus(),
+                    order.getEstado(),
                     OrderStatus.CANCELLED
             );
         }
 
-        if (order.getStatus() != OrderStatus.PENDING
-                && order.getStatus() != OrderStatus.CONFIRMED) {
+        if (order.getEstado() != OrderStatus.PENDING
+                && order.getEstado() != OrderStatus.CONFIRMED) {
 
             throw new InvalidOrderTransitionException(
-                    order.getStatus(),
+                    order.getEstado(),
                     OrderStatus.CANCELLED
             );
         }
 
-        OrderStatus previousStatus = order.getStatus();
+        OrderStatus previousStatus = order.getEstado();
         Instant now = Instant.now();
 
-        order.setStatus(OrderStatus.CANCELLED);
-        order.setUpdatedAt(now);
+        order.setEstado(OrderStatus.CANCELLED);
+        order.setFechaModificacion(now);
 
         Order savedOrder = orderRepository.save(order);
 
         OrderStatusHistory history = OrderStatusHistory.builder()
                 .order(savedOrder)
-                .previousStatus(previousStatus)
-                .newStatus(OrderStatus.CANCELLED)
-                .changedAt(now)
-                .reason("El pedido ha sido cancelado")
+                .previousEstado(previousStatus)
+                .nuevoEstado(OrderStatus.CANCELLED)
+                .fechaModificacion(now)
+                .razonCambio("El pedido ha sido cancelado")
                 .build();
 
         orderStatusHistoryRepository.save(history);
