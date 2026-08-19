@@ -22,7 +22,7 @@ public class InventoryService {
 
     //consulta un productor por su ID
     @Transactional(readOnly = true)
-    public ProductoResponseDto obtenerProductoId(Long productoId) {
+    public ProductoResponseDto obtenerProductoPorId(Long productoId) {
 
         Producto productoEncontrado = productoRepository.findById(productoId)
                 .orElseThrow(() ->
