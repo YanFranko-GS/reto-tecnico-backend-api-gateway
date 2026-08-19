@@ -13,7 +13,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name = "Productos")
+@Table(name = "productos")
 
 @Entity
 public class Producto {
