@@ -47,10 +47,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception exception
     ) {
+
+        exception.printStackTrace();
+
+        String message = exception.getMessage();
+
+        if (message == null || message.isBlank()) {
+            message = "Se produjo un error interno en el servidor";
+        }
+
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "INTERNAL_ERROR",
-                "Se produjo un error interno en el servidor"
+                message
         );
     }
 
