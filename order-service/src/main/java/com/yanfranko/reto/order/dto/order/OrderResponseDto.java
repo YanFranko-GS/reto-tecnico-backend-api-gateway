@@ -7,7 +7,7 @@ import java.time.Instant;
 
 public record OrderResponseDto(
         Long orderId,
-        Long productId,
+        Long productoId,
         Integer cantidad,
         OrderStatus estado,
         Instant fechaCreacion,
@@ -17,7 +17,7 @@ public record OrderResponseDto(
     public static OrderResponseDto fromEntity(Order order) {
         return new OrderResponseDto(
                 order.getOrderId(),
-                order.getProductId(),
+                order.getProductoId(),
                 order.getCantidad(),
                 order.getEstado(),
                 order.getFechaCreacion(),
