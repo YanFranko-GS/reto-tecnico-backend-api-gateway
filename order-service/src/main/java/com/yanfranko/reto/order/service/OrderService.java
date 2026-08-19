@@ -1,5 +1,6 @@
 package com.yanfranko.reto.order.service;
 
+import com.yanfranko.reto.order.client.InventoryClient;
 import com.yanfranko.reto.order.dto.OrderStatusHistory.OrderHistoryResponseDto;
 import com.yanfranko.reto.order.dto.order.CreateOrderRequestDto;
 import com.yanfranko.reto.order.dto.order.OrderResponseDto;
@@ -8,10 +9,12 @@ import com.yanfranko.reto.order.entity.OrderStatusHistory;
 import com.yanfranko.reto.order.entity.enums.OrderStatus;
 import com.yanfranko.reto.order.exception.InvalidOrderTransitionException;
 import com.yanfranko.reto.order.exception.OrderNotFoundException;
+import com.yanfranko.reto.order.exception.StockInsufficientException;
 import com.yanfranko.reto.order.repository.OrderRepository;
 import com.yanfranko.reto.order.repository.OrderStatusHistoryRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Instant;
 import java.util.List;
@@ -21,46 +24,69 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderStatusHistoryRepository orderStatusHistoryRepository;
+    private final InventoryClient inventoryClient;
 
     public OrderService(
             OrderRepository orderRepository,
-            OrderStatusHistoryRepository orderStatusHistoryRepository
+            OrderStatusHistoryRepository orderStatusHistoryRepository,
+            InventoryClient inventoryClient
     ) {
         this.orderRepository = orderRepository;
         this.orderStatusHistoryRepository = orderStatusHistoryRepository;
+        this.inventoryClient = inventoryClient;
     }
 
-    // Crea un pedido con el estado inicial PENDING
-    @Transactional
-    public OrderResponseDto createOrder(CreateOrderRequestDto request) {
+    // Crea un pedido verificando previamente la disponibilidad del producto
+    public Mono<OrderResponseDto> createOrder(CreateOrderRequestDto request) {
 
-        Instant now = Instant.now();
+        return inventoryClient
+                .checkAvailability(
+                        request.productoId(),
+                        request.cantidad()
+                )
+                .flatMap(availability -> {
 
-        Order order = Order.builder()
-                .productId(request.productId())
-                .quantity(request.quantity())
-                .status(OrderStatus.PENDING)
-                .createdAt(now)
-                .updatedAt(now)
-                .build();
+                    if (!Boolean.TRUE.equals(availability.disponible())) {
+                        return Mono.error(
+                                new StockInsufficientException(
+                                        request.productoId()
+                                )
+                        );
+                    }
 
-        Order savedOrder = orderRepository.save(order);
+                    return Mono.fromCallable(() -> {
 
-        OrderStatusHistory history = OrderStatusHistory.builder()
-                .order(savedOrder)
-                .previousStatus(null)
-                .newStatus(OrderStatus.PENDING)
-                .changedAt(now)
-                .reason("El pedido ha sido creado")
-                .build();
+                        Instant now = Instant.now();
 
-        orderStatusHistoryRepository.save(history);
+                        Order order = Order.builder()
+                                .productoId(request.productoId())
+                                .cantidad(request.cantidad())
+                                .estado(OrderStatus.CONFIRMED)
+                                .fechaCreacion(now)
+                                .fechaModificacion(now)
+                                .build();
 
-        return OrderResponseDto.fromEntity(savedOrder);
+                        Order savedOrder = orderRepository.save(order);
+
+                        OrderStatusHistory history = OrderStatusHistory.builder()
+                                .order(savedOrder)
+                                .previousEstado(null)
+                                .nuevoEstado(OrderStatus.CONFIRMED)
+                                .fechaModificacion(now)
+                                .razonCambio(
+                                        "El pedido ha sido confirmado por disponibilidad de stock"
+                                )
+                                .build();
+
+                        orderStatusHistoryRepository.save(history);
+
+                        return OrderResponseDto.fromEntity(savedOrder);
+
+                    }).subscribeOn(Schedulers.boundedElastic());
+                });
     }
 
     // Consulta un pedido por su ID
-    @Transactional(readOnly = true)
     public OrderResponseDto getOrderById(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
@@ -70,55 +96,54 @@ public class OrderService {
     }
 
     // Consulta el historial de un pedido
-    @Transactional(readOnly = true)
     public List<OrderHistoryResponseDto> getOrderHistory(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
 
-        return orderStatusHistoryRepository.findByOrderOrderId(order.getOrderId())
+        return orderStatusHistoryRepository
+                .findByOrderOrderId(order.getOrderId())
                 .stream()
                 .map(OrderHistoryResponseDto::fromEntity)
                 .toList();
     }
 
     // Cancela un pedido cuando el estado actual lo permite
-    @Transactional
     public OrderResponseDto cancelarOrder(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
 
-        if (order.getStatus() == OrderStatus.CANCELLED) {
+        if (order.getEstado() == OrderStatus.CANCELLED) {
             throw new InvalidOrderTransitionException(
-                    order.getStatus(),
+                    order.getEstado(),
                     OrderStatus.CANCELLED
             );
         }
 
-        if (order.getStatus() != OrderStatus.PENDING
-                && order.getStatus() != OrderStatus.CONFIRMED) {
+        if (order.getEstado() != OrderStatus.PENDING
+                && order.getEstado() != OrderStatus.CONFIRMED) {
 
             throw new InvalidOrderTransitionException(
-                    order.getStatus(),
+                    order.getEstado(),
                     OrderStatus.CANCELLED
             );
         }
 
-        OrderStatus previousStatus = order.getStatus();
+        OrderStatus previousStatus = order.getEstado();
         Instant now = Instant.now();
 
-        order.setStatus(OrderStatus.CANCELLED);
-        order.setUpdatedAt(now);
+        order.setEstado(OrderStatus.CANCELLED);
+        order.setFechaModificacion(now);
 
         Order savedOrder = orderRepository.save(order);
 
         OrderStatusHistory history = OrderStatusHistory.builder()
                 .order(savedOrder)
-                .previousStatus(previousStatus)
-                .newStatus(OrderStatus.CANCELLED)
-                .changedAt(now)
-                .reason("El pedido ha sido cancelado")
+                .previousEstado(previousStatus)
+                .nuevoEstado(OrderStatus.CANCELLED)
+                .fechaModificacion(now)
+                .razonCambio("El pedido ha sido cancelado")
                 .build();
 
         orderStatusHistoryRepository.save(history);

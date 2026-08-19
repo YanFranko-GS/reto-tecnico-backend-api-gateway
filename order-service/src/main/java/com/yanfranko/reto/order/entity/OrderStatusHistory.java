@@ -37,20 +37,20 @@ public class OrderStatusHistory {
     // Esto representa el estado que tendra el estado (antes)
     @Enumerated(EnumType.STRING)
     @Column(name = "previous_status", length = 20)
-    private OrderStatus previousStatus;
+    private OrderStatus previousEstado;
 
     // esto cambiara segun el stado anterior (despues)
     @Enumerated(EnumType.STRING)
-    @Column(name = "new_status", nullable = false, length = 20)
-    private OrderStatus newStatus;
+    @Column(name = "nuevo_estado", nullable = false, length = 20)
+    private OrderStatus nuevoEstado;
 
     // esto es para saber cuando se hizo el cambio de estado
-    @Column(nullable = false)
-    private Instant changedAt;
+    @Column(name = "fecha_modificacion", nullable = false)
+    private Instant fechaModificacion;
 
     // esto ya es el motivo del por que se realizo el cambio
-    @Column(length = 255)
-    private String reason;
+    @Column(name = "razon_cambio", length = 255)
+    private String razonCambio;
 
     // seguimiento de la peticion
     @Column(name = "trace_id", length = 100)

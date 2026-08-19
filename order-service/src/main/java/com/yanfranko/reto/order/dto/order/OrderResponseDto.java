@@ -7,21 +7,21 @@ import java.time.Instant;
 
 public record OrderResponseDto(
         Long orderId,
-        Long productId,
-        Integer quantity,
-        OrderStatus status,
-        Instant createdAt,
-        Instant updatedAt
+        Long productoId,
+        Integer cantidad,
+        OrderStatus estado,
+        Instant fechaCreacion,
+        Instant fechaModificacion
 ) {
     // Metodo estático opcional para convertir de Entidad a DTO rápidamente
     public static OrderResponseDto fromEntity(Order order) {
         return new OrderResponseDto(
                 order.getOrderId(),
-                order.getProductId(),
-                order.getQuantity(),
-                order.getStatus(),
-                order.getCreatedAt(),
-                order.getUpdatedAt()
+                order.getProductoId(),
+                order.getCantidad(),
+                order.getEstado(),
+                order.getFechaCreacion(),
+                order.getFechaModificacion()
         );
     }
 }
