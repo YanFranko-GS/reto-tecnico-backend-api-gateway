@@ -1,0 +1,5 @@
+INSERT INTO productos (nombre, description, precio, stock, estado, fecha_creacion, fecha_modificacion) VALUES ('Laptop Lenovo IdeaPad', 'Laptop para trabajo y estudios', 2499.90, 10, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO productos (nombre, description, precio, stock, estado, fecha_creacion, fecha_modificacion) VALUES ('Mouse Logitech M185', 'Mouse inalámbrico USB', 59.90, 25, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO productos (nombre, description, precio, stock, estado, fecha_creacion, fecha_modificacion) VALUES ('Teclado Mecánico Redragon', 'Teclado mecánico con iluminación RGB', 189.90, 8, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO productos (nombre, description, precio, stock, estado, fecha_creacion, fecha_modificacion) VALUES ('Monitor LG 24 pulgadas', 'Monitor Full HD de 24 pulgadas', 649.90, 0, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO productos (nombre, description, precio, stock, estado, fecha_creacion, fecha_modificacion) VALUES ('Disco SSD Kingston 1TB', 'Unidad SSD SATA de 1 TB', 299.90, 3, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
