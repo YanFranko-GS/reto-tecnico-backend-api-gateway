@@ -1,6 +1,7 @@
 package com.yanfranko.reto.order.client;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,7 +26,8 @@ public class InventoryClient {
     public Mono<AvailabilityResponse> checkAvailability(
             Long productoId,
             Integer cantidad,
-            String traceId
+            String traceId,
+            String accessToken
     ) {
         return webClient
                 .get()
@@ -35,7 +37,12 @@ public class InventoryClient {
                         .build(productoId)
                 )
                 .header(TRACE_ID_HEADER, traceId)
+                .header(HttpHeaders.AUTHORIZATION,
+                        "Bearer " + accessToken
+                        )
                 .retrieve()
+
+
                 .onStatus(
                         HttpStatusCode::is4xxClientError,
                         response -> Mono.error(
