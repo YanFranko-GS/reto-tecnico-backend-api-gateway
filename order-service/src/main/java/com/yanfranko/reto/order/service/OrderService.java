@@ -13,6 +13,8 @@ import com.yanfranko.reto.order.exception.StockInsufficientException;
 import com.yanfranko.reto.order.repository.OrderRepository;
 import com.yanfranko.reto.order.repository.OrderStatusHistoryRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -40,87 +42,92 @@ public class OrderService {
 
     // Crea un pedido verificando previamente la disponibilidad del producto
     //se aladio el x-trace-id
+    //añadimos la propagacion del token
     public Mono<OrderResponseDto> createOrder(
             CreateOrderRequestDto request,
             String traceId
     ) {
 
-        //esto se esta añadiendo
-        log.info(
-                "[traceId={}] Consultando disponibilidad del producto {} con la cantidad {}",
-                traceId,
-                request.productoId(),
-                request.cantidad()
-
-        );
-
-        return inventoryClient
-                .checkAvailability(
-                        request.productoId(),
-                        request.cantidad(),
-                        traceId
+        return ReactiveSecurityContextHolder.getContext()
+                .map(context -> context.getAuthentication())
+                .cast(JwtAuthenticationToken.class)
+                .map(authentication ->
+                        authentication.getToken().getTokenValue()
                 )
-                .flatMap(availability -> {
+                .flatMap(accessToken ->
 
-                    log.info(
-                            "[traceId={}] Disponibilidad recibida para el producto {}: {}",
-                            traceId,
-                            request.productoId(),
-                            availability.disponible()
-                    );
-
-                    if (!Boolean.TRUE.equals(availability.disponible())) {
-
-                        log.warn(
-                                "[traceId={}] Stock insuficiente para producto {}",
-                                traceId,
-                                request.productoId()
-                        );
-
-                        return Mono.error(
-                                new StockInsufficientException(
-                                        request.productoId()
+                        inventoryClient
+                                .checkAvailability(
+                                        request.productoId(),
+                                        request.cantidad(),
+                                        traceId,
+                                        accessToken
                                 )
-                        );
-                    }
+                                .flatMap(availability -> {
 
-                    return Mono.fromCallable(() -> {
+                                    log.info(
+                                            "[traceId={}] Disponibilidad recibida para producto {}: {}",
+                                            traceId,
+                                            request.productoId(),
+                                            availability.disponible()
+                                    );
 
-                        Instant now = Instant.now();
+                                    if (!Boolean.TRUE.equals(
+                                            availability.disponible()
+                                    )) {
+                                        return Mono.error(
+                                                new StockInsufficientException(
+                                                        request.productoId()
+                                                )
+                                        );
+                                    }
 
-                        Order order = Order.builder()
-                                .productoId(request.productoId())
-                                .cantidad(request.cantidad())
-                                .estado(OrderStatus.CONFIRMED)
-                                .fechaCreacion(now)
-                                .fechaModificacion(now)
-                                .build();
+                                    return Mono.fromCallable(() -> {
 
-                        Order savedOrder = orderRepository.save(order);
+                                        Instant now = Instant.now();
 
-                        OrderStatusHistory history = OrderStatusHistory.builder()
-                                .order(savedOrder)
-                                .previousEstado(null)
-                                .nuevoEstado(OrderStatus.CONFIRMED)
-                                .fechaModificacion(now)
-                                .razonCambio(
-                                        "El pedido ha sido confirmado por disponibilidad de stock"
-                                )
-                                .build();
+                                        Order order = Order.builder()
+                                                .productoId(request.productoId())
+                                                .cantidad(request.cantidad())
+                                                .estado(OrderStatus.CONFIRMED)
+                                                .fechaCreacion(now)
+                                                .fechaModificacion(now)
+                                                .build();
 
-                        orderStatusHistoryRepository.save(history);
+                                        Order savedOrder =
+                                                orderRepository.save(order);
 
-                        log.info(
-                                "[traceId={}] Pedido {} confirmado correctamente",
-                                traceId,
-                                savedOrder.getOrderId()
-                        );
+                                        OrderStatusHistory history =
+                                                OrderStatusHistory.builder()
+                                                        .order(savedOrder)
+                                                        .previousEstado(null)
+                                                        .nuevoEstado(
+                                                                OrderStatus.CONFIRMED
+                                                        )
+                                                        .fechaModificacion(now)
+                                                        .razonCambio(
+                                                                "El pedido ha sido confirmado por disponibilidad de stock"
+                                                        )
+                                                        .build();
 
-                        return OrderResponseDto.fromEntity(savedOrder);
+                                        orderStatusHistoryRepository.save(history);
 
-                    }).subscribeOn(Schedulers.boundedElastic());
-                });
+                                        log.info(
+                                                "[traceId={}] Pedido {} confirmado correctamente",
+                                                traceId,
+                                                savedOrder.getOrderId()
+                                        );
+
+                                        return OrderResponseDto
+                                                .fromEntity(savedOrder);
+
+                                    }).subscribeOn(
+                                            Schedulers.boundedElastic()
+                                    );
+                                })
+                );
     }
+
 
     // Consulta un pedido por su ID
     public OrderResponseDto getOrderById(Long orderId) {
