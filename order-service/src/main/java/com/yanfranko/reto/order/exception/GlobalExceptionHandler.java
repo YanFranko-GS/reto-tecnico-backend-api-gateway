@@ -4,9 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,6 +43,42 @@ public class GlobalExceptionHandler {
                 exchange
         );
     }
+
+    //agregamos esto nuevo para el 400 INVALID_REQUEST
+    @ExceptionHandler(WebExchangeBindException.class)
+    public ResponseEntity<ErrorResponse> handleValidationError(
+            WebExchangeBindException exception,
+            ServerWebExchange exchange
+    ) {
+
+        String traceId = exchange.getRequest()
+                .getHeaders()
+                .getFirst("X-Trace-Id");
+
+        String message = exception.getFieldErrors()
+                .stream()
+                .map(error ->
+                        error.getField() + ": " + error.getDefaultMessage()
+                )
+                .collect(Collectors.joining(", "));
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                Instant.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "INVALID_REQUEST",
+                message,
+                traceId
+        );
+
+        exchange.getResponse()
+                .getHeaders()
+                .set("X-Trace-Id", traceId);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+    ////////////////
 
     @ExceptionHandler(StockInsufficientException.class)
     public ResponseEntity<ErrorResponse> handleStockInsufficient(
