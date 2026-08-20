@@ -17,22 +17,30 @@ public class InventoryController {
     }
 
     @GetMapping("/{productoId}")
-    public ResponseEntity<ProductoResponseDto> obtenerProductoPorId(@PathVariable Long productoId) {
+    public ResponseEntity<ProductoResponseDto> obtenerProductoPorId(
+            @PathVariable Long productoId,
+            @RequestHeader(value = "X-Trace-Id") String traceId
+    ) {
         return ResponseEntity.ok(
-                inventoryService.obtenerProductoPorId(productoId)
+                inventoryService.obtenerProductoPorId(
+                        productoId,
+                        traceId
+                )
         );
     }
 
     // compuba la disponibilidad del producto para una cantidad determinada
     @GetMapping("/{productoId}/disponibilidad")
-    public ResponseEntity<DisponibilidadResponseDto> verifiDisponibilidad(
+    public ResponseEntity<DisponibilidadResponseDto> verificarDisponibilidad(
             @PathVariable Long productoId,
-            @RequestParam Integer cantidadSolicitada
+            @RequestParam Integer cantidadSolicitada,
+            @RequestHeader(value = "X-Trace-Id") String traceId
     ) {
         return ResponseEntity.ok(
                 inventoryService.verificarDisponibilidad(
                         productoId,
-                        cantidadSolicitada
+                        cantidadSolicitada,
+                        traceId
                 )
         );
     }
