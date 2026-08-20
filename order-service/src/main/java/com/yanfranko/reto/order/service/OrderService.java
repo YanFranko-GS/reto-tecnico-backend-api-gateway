@@ -12,6 +12,7 @@ import com.yanfranko.reto.order.exception.OrderNotFoundException;
 import com.yanfranko.reto.order.exception.StockInsufficientException;
 import com.yanfranko.reto.order.repository.OrderRepository;
 import com.yanfranko.reto.order.repository.OrderStatusHistoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -19,6 +20,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Instant;
 import java.util.List;
 
+@Slf4j
 @Service
 public class OrderService {
 
@@ -43,6 +45,15 @@ public class OrderService {
             String traceId
     ) {
 
+        //esto se esta añadiendo
+        log.info(
+                "[traceId={}] Consultando disponibilidad del producto {} con la cantidad {}",
+                traceId,
+                request.productoId(),
+                request.cantidad()
+
+        );
+
         return inventoryClient
                 .checkAvailability(
                         request.productoId(),
@@ -51,7 +62,21 @@ public class OrderService {
                 )
                 .flatMap(availability -> {
 
+                    log.info(
+                            "[traceId={}] Disponibilidad recibida para el producto {}: {}",
+                            traceId,
+                            request.productoId(),
+                            availability.disponible()
+                    );
+
                     if (!Boolean.TRUE.equals(availability.disponible())) {
+
+                        log.warn(
+                                "[traceId={}] Stock insuficiente para producto {}",
+                                traceId,
+                                request.productoId()
+                        );
+
                         return Mono.error(
                                 new StockInsufficientException(
                                         request.productoId()
@@ -84,6 +109,12 @@ public class OrderService {
                                 .build();
 
                         orderStatusHistoryRepository.save(history);
+
+                        log.info(
+                                "[traceId={}] Pedido {} confirmado correctamente",
+                                traceId,
+                                savedOrder.getOrderId()
+                        );
 
                         return OrderResponseDto.fromEntity(savedOrder);
 
