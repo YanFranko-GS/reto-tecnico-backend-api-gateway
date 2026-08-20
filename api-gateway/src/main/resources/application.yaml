@@ -20,6 +20,12 @@ spring:
               predicates:
                 - Path=/api/v1/inventario/producto/**
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/realms/reto-backend
+
 management:
   endpoints:
     web:
