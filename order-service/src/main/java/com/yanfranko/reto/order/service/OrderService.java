@@ -37,12 +37,17 @@ public class OrderService {
     }
 
     // Crea un pedido verificando previamente la disponibilidad del producto
-    public Mono<OrderResponseDto> createOrder(CreateOrderRequestDto request) {
+    //se aladio el x-trace-id
+    public Mono<OrderResponseDto> createOrder(
+            CreateOrderRequestDto request,
+            String traceId
+    ) {
 
         return inventoryClient
                 .checkAvailability(
                         request.productoId(),
-                        request.cantidad()
+                        request.cantidad(),
+                        traceId
                 )
                 .flatMap(availability -> {
 
