@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: order_password
 
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
     volumes:
       - postgres_order_data:/var/lib/postgresql/data
@@ -34,7 +34,7 @@ services:
       MYSQL_ROOT_PASSWORD: root_password
 
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
     volumes:
       - mysql_inventory_data:/var/lib/mysql
@@ -45,8 +45,21 @@ services:
       timeout: 5s
       retries: 10
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.1
+    container_name: keycloak
+    restart: unless-stopped
+
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+    command:
+      - start-dev
+
+    ports:
+      - "8090:8080"
+
 volumes:
-
   postgres_order_data:
-
   mysql_inventory_data:
