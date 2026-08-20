@@ -14,7 +14,8 @@ import java.util.UUID;
 @Order(-100)
 public class TraceIdWebFilter implements WebFilter {
 
-    private static final String TRACE_ID_HEADER = "X-Trace-Id";
+    public static final String TRACE_ID_HEADER = "X-Trace-Id";
+    public static final String TRACE_ID_MDC_KEY = "traceId";
 
     @Override
     public Mono<Void> filter(
@@ -44,6 +45,10 @@ public class TraceIdWebFilter implements WebFilter {
                 .getHeaders()
                 .set(TRACE_ID_HEADER, traceId);
 
-        return chain.filter(mutatedExchange);
+        final String currentTraceId = traceId;
+
+        return chain.filter(mutatedExchange)
+                .contextWrite(context ->
+                        context.put(TRACE_ID_MDC_KEY, currentTraceId));
     }
 }
