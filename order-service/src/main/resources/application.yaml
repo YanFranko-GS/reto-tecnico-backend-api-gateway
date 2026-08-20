@@ -19,6 +19,13 @@ spring:
       hibernate:
         format_sql: true
 
+  ##anadimos el oauth2 osea usaremos lo mismo del gateway
+  security:
+    oauth2:
+        resourceserver:
+            jwt:
+            issuer-uri: http://localhost:8090/realms/reto-backend
+
 inventory:
   service:
     url: http://localhost:8082
