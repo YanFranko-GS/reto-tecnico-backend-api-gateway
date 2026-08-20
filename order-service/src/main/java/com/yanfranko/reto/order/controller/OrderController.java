@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -24,12 +25,20 @@ public class OrderController {
     }
 
     // Registrar un nuevo pedido
+
+    //se aladio el x-trace-id
     @PostMapping
     public Mono<ResponseEntity<OrderResponseDto>> createOrder(
-            @Valid @RequestBody CreateOrderRequestDto request
+            @Valid @RequestBody CreateOrderRequestDto request,
+            @RequestHeader(value = "X-Trace-Id", required = false) String traceId
     ) {
+
+        if (traceId == null || traceId.isBlank()) {
+            traceId = UUID.randomUUID().toString();
+        }
+
         return orderService
-                .createOrder(request)
+                .createOrder(request, traceId)
                 .map(response ->
                         ResponseEntity
                                 .status(HttpStatus.CREATED)
