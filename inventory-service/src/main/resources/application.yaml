@@ -19,6 +19,13 @@ spring:
       hibernate:
         format_sql: true
 
+  ## igual aqui tambien tenemos que proteger el servicio con oauth2
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8090/realms/reto-backend
+
 management:
   endpoints:
     web:
