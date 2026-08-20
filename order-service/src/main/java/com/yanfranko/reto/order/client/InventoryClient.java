@@ -9,6 +9,8 @@ import reactor.core.publisher.Mono;
 @Component
 public class InventoryClient {
 
+    private static final String TRACE_ID_HEADER = "X-Trace-Id";
+
     private final WebClient webClient;
 
     public InventoryClient(
@@ -22,7 +24,8 @@ public class InventoryClient {
 
     public Mono<AvailabilityResponse> checkAvailability(
             Long productoId,
-            Integer cantidad
+            Integer cantidad,
+            String traceId
     ) {
         return webClient
                 .get()
@@ -31,6 +34,7 @@ public class InventoryClient {
                         .queryParam("cantidadSolicitada", cantidad)
                         .build(productoId)
                 )
+                .header(TRACE_ID_HEADER, traceId)
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::is4xxClientError,
