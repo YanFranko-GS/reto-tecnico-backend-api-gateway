@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
-
+    //configuarion para el swuagger
     @Bean
     public OpenAPI orderServiceOpenAPI() {
 

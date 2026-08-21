@@ -8,6 +8,13 @@ spring:
   ## cambiabos las rutas que estaban en host a los enviroments del docker
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/order_db}
+    ## estoy usando las credenciales de docker si lo quieres probar en tu maquina tienes que
+    ## poner las credenciales de tu motor de base de datos
+    ## ejemplo el mio es user: potgres, pass: potgres , ahi si me correo el modulo
+    ## pero tu de seguro lo veras como user: order_user , pass: order_password
+    ## haciendo referencia al modulo
+    ## solo queria dejar esto claro para que cuando lo pruebes no te bote error
+    ## igual lo voy a documentar en el readme en la parte ultima para dejarlo mas claro
     username: ${SPRING_DATASOURCE_USERNAME:order_user}
     password: ${SPRING_DATASOURCE_PASSWORD:order_password}
     driver-class-name: org.postgresql.Driver

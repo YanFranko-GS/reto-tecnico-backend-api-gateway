@@ -14,6 +14,13 @@ public class InventoryClient {
 
     private final WebClient webClient;
 
+    /**
+     * Cliente HTTP para consultar la disponibilidad de productos
+     * en el Inventory Service antes de confirmar un pedido.
+     *
+     * Propaga el token JWT y el identificador de trazabilidad (X-Trace-Id)
+     * para conservar la autenticación y el seguimiento entre modulos.
+     */
     public InventoryClient(
             WebClient.Builder webClientBuilder,
             @Value("${inventory.service.url}") String inventoryServiceUrl

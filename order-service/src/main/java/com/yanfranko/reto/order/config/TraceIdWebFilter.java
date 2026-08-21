@@ -17,6 +17,8 @@ public class TraceIdWebFilter implements WebFilter {
     public static final String TRACE_ID_HEADER = "X-Trace-Id";
     public static final String TRACE_ID_MDC_KEY = "traceId";
 
+    // esto sirve como filtro global para que toda la trazabilidad tengs un identificador unico
+    // mas que todo para poder rastrearlo medinte el gateway
     @Override
     public Mono<Void> filter(
             ServerWebExchange exchange,

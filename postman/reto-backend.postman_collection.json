@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "04e8a195-743a-4bd9-8e21-03102d7a1ac0",
+		"name": "Reto_Tecnico",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "57110078"
+	},
+	"item": [
+		{
+			"name": "Reto_Tecnico V2",
+			"item": [
+				{
+					"name": "Inventory_Service",
+					"item": [
+						{
+							"name": "Consulta-ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtUFpWZmk1NjBCc3otWUZxdTRPRXY4QVd1ZVJlb1h6ZjE4ckxnSFllNDVzIn0.eyJleHAiOjE3ODcyNjAwMDEsImlhdCI6MTc4NzI1OTcwMSwiYXV0aF90aW1lIjoxNzg3MjU5NzAwLCJqdGkiOiJvbnJ0YWM6ZjBkODZkYWQtMjM5OS1kOGE2LTcwMmMtOGMwZjM3ODY4MzZhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL3JlYWxtcy9yZXRvLWJhY2tlbmQiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMDJlMTNlZTYtNWE1NS00YTc1LThkOTMtODBhNGY2ZGNjNmMyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmV0by1hcGkiLCJzaWQiOiJDV0h2NTNjREJwMl9lUGFMQ19XajBuXzIiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZXRvLWJhY2tlbmQiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJZYW5mcmFua28gRGV2ZWxvcGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoieWFuZnJhbmtvIiwiZ2l2ZW5fbmFtZSI6IllhbmZyYW5rbyIsImZhbWlseV9uYW1lIjoiRGV2ZWxvcGVyIiwiZW1haWwiOiJnb256YWxlc0BnbWFpbC5jb20ifQ.CvqPo2qD6NZC7bPu-GHoyC_RG-uLBufYW7_HA8szBdK-sMk2YYcYBbvhRS0HC2vjGmZjIEvgV5Bh-jQPl9n_NHUycE4EZOeaLeIUmxeRSXxcJPGXd53ip1clThmH3zcml57xXYNqURs8bPFz28XnFA5Qoxv6OQiACWxjATgRBctlzEPr0DPor0-7I9OjLwQIRdyOtPwMefOEiTCUKY0CY470RRCVtb0cbzSZpqJ3gAVK62gBjb2yyEV_VbzvmOvTwoGpJawzlCdkhwy-0rTeRqj0d_YEwGdDPPkVm97a3OY3GpDdS_ujGtzhuHkRPi7NP9S7eUShA0vzZ3Ya6JgvlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/api/v1/inventario/producto/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"api",
+										"v1",
+										"inventario",
+										"producto",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Consultar-Disponibilidad",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/api/v1/inventario/producto/1/disponibilidad?cantidadSolicitada=4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"api",
+										"v1",
+										"inventario",
+										"producto",
+										"1",
+										"disponibilidad"
+									],
+									"query": [
+										{
+											"key": "cantidadSolicitada",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order_Service",
+					"item": [
+						{
+							"name": "Consultar-ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtUFpWZmk1NjBCc3otWUZxdTRPRXY4QVd1ZVJlb1h6ZjE4ckxnSFllNDVzIn0.eyJleHAiOjE3ODcyNTc5ODgsImlhdCI6MTc4NzI1NzY4OCwiYXV0aF90aW1lIjoxNzg3MjU3Njg4LCJqdGkiOiJvbnJ0YWM6OTI1NjEwM2YtNzQyMC1iNWMxLTc0NWYtYjZlN2QzNTAxN2Y5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL3JlYWxtcy9yZXRvLWJhY2tlbmQiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMDJlMTNlZTYtNWE1NS00YTc1LThkOTMtODBhNGY2ZGNjNmMyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmV0by1hcGkiLCJzaWQiOiJkcFZ1RE5RUUJFR1RmZnRITHdZUE5MOXoiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZXRvLWJhY2tlbmQiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJZYW5mcmFua28gRGV2ZWxvcGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoieWFuZnJhbmtvIiwiZ2l2ZW5fbmFtZSI6IllhbmZyYW5rbyIsImZhbWlseV9uYW1lIjoiRGV2ZWxvcGVyIiwiZW1haWwiOiJnb256YWxlc0BnbWFpbC5jb20ifQ.d0m4TWxSzVZvNwok3y7i7RfrwiyET8UNI0apZAzCfSKu3IVlQSSd6zN6tPpsCPu-XVACNsTGYXLpWJJ3ezQxFtcP42Ib4iIF_lShdOzaURUZ43Mh5GepD_7RECR82vTD66jeWYflJ0djK1go8SfLmfjQbBztNbrp8SJENRepr4UTcz5i1F6q6UfGQQtsAEKruCfuEixQUjoHhzZCbAaysbO_uy-GcROrIEPnbNvuzKSX-1Cs9u74CcCR1ySsqPiaod5jTolxmCppYdV4xUEJNEKbG2o-lLhCO41VUwMtvZerJybL4hMxzsk-3T6ajTD5pmvsxIVjtH6d1mvrzhAGZw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/v1/orders/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "WedClient-Crear-Pedido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 200\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/v1/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									]
+								},
+								"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+							},
+							"response": []
+						},
+						{
+							"name": "Consultar-Historial",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/api/v1/orders/6/history",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"6",
+										"history"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancelar-Pedido",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/api/v1/orders/6/cancel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"api",
+										"v1",
+										"orders",
+										"6",
+										"cancel"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Api_Gateway",
+					"item": [
+						{
+							"name": "Gateway-Consultar-Producto",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"requests": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJWRkdTNmxGbHptb1hxRWxWbkFWVzdBRUgzU3MtTW1XSVRtNXF1OEQtNFRBIn0.eyJleHAiOjE3ODczMzI3OTMsImlhdCI6MTc4NzMzMjQ5MywiYXV0aF90aW1lIjoxNzg3MzMyNDkzLCJqdGkiOiJvbnJ0YWM6ZTgzMTM5YjYtZDVhYy0wNmFhLWZkMzgtNzcxMWU1ZGU5NjMyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL3JlYWxtcy9yZXRvLWJhY2tlbmQiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzc2ZjNmOTMtMDIxMy00MWRjLWE1ODQtM2MyZDgzNDEwNTY4IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmV0by1hcGkiLCJzaWQiOiJhLVRhaUNtUVl4TlI2UV9NMml4LU1OT1UiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZXRvLWJhY2tlbmQiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJZYW5mcmFua28gRGV2ZWxvcGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoieWFuZnJhbmtvIiwiZ2l2ZW5fbmFtZSI6IllhbmZyYW5rbyIsImZhbWlseV9uYW1lIjoiRGV2ZWxvcGVyIiwiZW1haWwiOiJhcmVhdHJhYmFqb3lhbkBnbWFpbC5jb20ifQ.nUcYreSykoy4ZJuqfrLUvd5LVgiHjAd7Zs_8xpxmMissICaGIj4JXwaBWFvljqBzgHmSiBlxSU8FcfSSOKAnBffExhN7yo2VRMVYN485saNTHG6XQkbwlCEHJkCeY96t9hG66Hw8g09adfU-JRFBjXxKBxecYWSkrLmged2coYTIGJF3ya2Zx-YTEikzn7QW0mdR6Vy19p8Ij-dSw25lgzzCeA5p7-XYxQc6oI3u74EBOcpVZOpi_Upj_5-WL9X0gUC8En_5bbQ-7SE6ANjU-Qlwy5G0mMlz7Dbf3M-x54EIVIt-uTy_SLrYVwTfWe1SJ9zlMQS7QD1IZZXAORyQCA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/inventario/producto/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"inventario",
+										"producto",
+										"1"
+									]
+								},
+								"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+							},
+							"response": []
+						},
+						{
+							"name": "Gateway-Consultar-Disponibilidad",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/inventario/producto/1/disponibilidad?cantidadSolicitada=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"inventario",
+										"producto",
+										"1",
+										"disponibilidad"
+									],
+									"query": [
+										{
+											"key": "cantidadSolicitada",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtUFpWZmk1NjBCc3otWUZxdTRPRXY4QVd1ZVJlb1h6ZjE4ckxnSFllNDVzIn0.eyJleHAiOjE3ODcyNjM4MjgsImlhdCI6MTc4NzI2MzUyOCwiYXV0aF90aW1lIjoxNzg3MjYzMzI3LCJqdGkiOiJvbnJ0cnQ6MmE4YjliNzMtZTdiMS0xNTlhLTYwMjQtODVhODc5NmUxYjM1IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL3JlYWxtcy9yZXRvLWJhY2tlbmQiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMDJlMTNlZTYtNWE1NS00YTc1LThkOTMtODBhNGY2ZGNjNmMyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmV0by1hcGkiLCJzaWQiOiJQRVlQeXgxZWlraHdMUi1SZEYyTnZEa1IiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1yZXRvLWJhY2tlbmQiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIGVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJZYW5mcmFua28gRGV2ZWxvcGVyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoieWFuZnJhbmtvIiwiZ2l2ZW5fbmFtZSI6IllhbmZyYW5rbyIsImZhbWlseV9uYW1lIjoiRGV2ZWxvcGVyIiwiZW1haWwiOiJnb256YWxlc0BnbWFpbC5jb20ifQ.RFFYi3hXjx7xH-FTqvXEUUq-xTFNOeiav5Ywd-ccG1c_DAlYRKNd6xeCG7Sm8FETxDg4REbLYVg5MPSGiFx-37H27JOXzgowC-gkKLx-yl3bsurdiMr0W8l0YCQcHo0v3wo0zW0vLDFYjzLhRLg2rCuYGHCiKto9Jw30g2phcTxq8R9nej0Y018D33Usm5p5rr5lwxLKpvCRt2ximTbFo5oQpFN9qyB9JH-VNd34r8q78__2NspU0g_83gyIZN25vRB3xT6kX5msYNxmzIhcU-v3TWUTURJi1ON9mjtVFWf9BZ258FDBsuoETSOSx4GzAgZHQIEfH7hWXZfg2Gw7GQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Trace-Id",
+										"value": "prueba-trace-001",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"disabled": true
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "prueba-security-001",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "KeyLock",
+					"item": [
+						{
+							"name": "KeyLock-Obtener-Token",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "scope",
+											"value": "openid profile email",
+											"type": "string"
+										},
+										{
+											"key": "clientId",
+											"value": "reto-api",
+											"type": "string"
+										},
+										{
+											"key": "accessTokenUrl",
+											"value": "http://localhost:8090/realms/reto-backend/protocol/openid-connect/token",
+											"type": "string"
+										},
+										{
+											"key": "authUrl",
+											"value": "http://localhost:8090/realms/reto-backend/protocol/openid-connect/auth",
+											"type": "string"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "https://oauth.pstmn.io/v1/browser-callback",
+											"type": "string"
+										},
+										{
+											"key": "tokenName",
+											"value": "reto-backend-token",
+											"type": "string"
+										},
+										{
+											"key": "grant_type",
+											"value": "authorization_code_with_pkce",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Trace-Id",
+										"value": "prueba-security-001",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verificar-Conexion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8090/realms/reto-backend/.well-known/openid-configuration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8090",
+									"path": [
+										"realms",
+										"reto-backend",
+										".well-known",
+										"openid-configuration"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
