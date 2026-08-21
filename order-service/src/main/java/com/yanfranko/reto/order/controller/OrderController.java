@@ -65,10 +65,13 @@ public class OrderController {
     // Cancelar un pedido
     @PostMapping("/{orderId}/cancel")
     public Mono<ResponseEntity<OrderResponseDto>> cancelOrder(
-            @PathVariable Long orderId
+            @PathVariable Long orderId,
+            //estoy añadiendo esto
+            @RequestHeader("X-Trace-Id") String traceId
     ) {
+        //estoy añadiendo el traceID
         return Mono.fromCallable(() ->
-                        orderService.cancelarOrder(orderId)
+                        orderService.cancelarOrder(orderId, traceId)
                 )
                 .subscribeOn(Schedulers.boundedElastic())
                 .map(ResponseEntity::ok);
