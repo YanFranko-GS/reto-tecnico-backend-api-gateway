@@ -440,4 +440,6 @@ Y una petición sin JWT para comprobar:
 
 ## Nota
 
-Las credenciales y contraseñas incluidas en Docker Compose son exclusivamente para desarrollo local y demostración del reto. No deben reutilizarse en producción.
+Las credenciales o las contraseñas que estan en este proyecto son visibles en cada archivo especifico, dicho esto no usarlo en produccion. 
+atentamente:
+Yan Franko Gonzales Segura
