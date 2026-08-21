@@ -57,9 +57,109 @@ services:
     command:
       - start-dev
 
+    ## añadimos el volumen mas que todo para cuando envie ya tenga su propio usuario
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
     ports:
       - "8090:8080"
+
+  ## aqui añadimos el modulo del inventori service:
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    container_name: inventory-service
+    restart: unless-stopped
+
+    extra_hosts:
+      - "localhost:host-gateway"
+
+    depends_on:
+      mysql-inventory:
+          condition: service_healthy
+      keycloak:
+        condition: service_started
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-inventory:3306/inventory_db
+      SPRING_DATASOURCE_USERNAME: inventory_user
+      SPRING_DATASOURCE_PASSWORD: inventory_password
+      ## esto es la parte de la configuracion del keycloak la parte del ussil:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8090/realms/reto-backend
+
+      SERVER_PORT: 8082
+      
+    expose:
+      - "8082"
+
+
+  ## la configuarion del order- service
+  order-service:
+    build:
+        context: ./order-service
+        dockerfile: Dockerfile
+    container_name: order-service
+    restart: unless-stopped
+
+    extra_hosts:
+      - "localhost:host-gateway"
+
+    depends_on:
+      postgres-order:
+        condition: service_healthy
+      inventory-service:
+        condition: service_started
+      keycloak:
+        condition: service_started
+
+    ##ojo no olvider usar las mismas contraseñas como se esta contruyendo el contenedor de mysql y postgre se deseas cambiar
+    ## las contraseñas primero cambia las de arriba sino dara error
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-order:5432/order_db
+      SPRING_DATASOURCE_USERNAME: order_user
+      SPRING_DATASOURCE_PASSWORD: order_password
+
+      INVENTORY_SERVICE_URL: http://inventory-service:8082
+      ## esto es la parte de la configuracion del keycloak la parte del ussil:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8090/realms/reto-backend
+
+      SERVER_PORT: 8081
+
+    expose:
+      - "8081"
+
+  ## aqui la configuarion del gateway
+  api-gateway:
+    build:
+        context: ./api-gateway
+        dockerfile: Dockerfile
+    container_name: api-gateway
+    restart: unless-stopped
+
+    extra_hosts:
+        - "localhost:host-gateway"
+
+    depends_on:
+      order-service:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+      keycloak:
+        condition: service_started
+
+    environment:
+      SERVER_PORT: 8080
+
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8090/realms/reto-backend
+
+      ORDER_SERVICE_URL: http://order-service:8081
+      INVENTORY_SERVICE_URL: http://inventory-service:8082
+
+    ports:
+      - "8080:8080"
 
 volumes:
   postgres_order_data:
   mysql_inventory_data:
+  keycloak_data:
