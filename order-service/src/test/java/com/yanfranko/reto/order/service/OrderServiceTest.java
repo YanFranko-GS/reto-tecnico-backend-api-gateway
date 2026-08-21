@@ -200,6 +200,7 @@ class OrderServiceTest {
         OrderResponseDto response =
                 orderService.getOrderById(
                         1L
+
                 );
 
         assertNotNull(response);
@@ -245,7 +246,9 @@ class OrderServiceTest {
         assertThrows(
                 InvalidOrderTransitionException.class,
                 () -> orderService.cancelarOrder(
-                        1L
+                        1L,
+                        "trace-test-003"
+
                 )
         );
 
