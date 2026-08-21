@@ -1,4 +1,4 @@
-package com.yanfranko.reto.order.config;
+package com.yanfranko.reto.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,21 +18,14 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        //añadimos ahora la ruta del swuagger ya con eso estaria la documentacion
-                        .pathMatchers("/actuator/health",
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                                ).permitAll()
+                        .pathMatchers("/actuator/health").permitAll()
+                        //cambiamos el permitALL ahora por autentificacion
                         .anyExchange().authenticated()
                 )
+
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(Customizer.withDefaults())
                 )
                 .build();
     }
-
-
-    //a qui aplicaremos la misma configuracion que se uso en el gateway
 }
-

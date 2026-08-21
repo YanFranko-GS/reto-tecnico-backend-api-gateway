@@ -26,10 +26,11 @@ public class OrderController {
     // Registrar un nuevo pedido
     @PostMapping
     public Mono<ResponseEntity<OrderResponseDto>> createOrder(
-            @Valid @RequestBody CreateOrderRequestDto request
+            @Valid @RequestBody CreateOrderRequestDto request,
+            @RequestHeader("X-Trace-Id") String traceId
     ) {
         return orderService
-                .createOrder(request)
+                .createOrder(request, traceId)
                 .map(response ->
                         ResponseEntity
                                 .status(HttpStatus.CREATED)

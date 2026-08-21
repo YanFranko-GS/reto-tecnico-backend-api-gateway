@@ -1,3 +1,33 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: order-service
+              uri: ${ORDER_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/v1/orders/**
+
+            - id: inventory-service
+              uri: ${INVENTORY_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/v1/inventario/producto/**
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://localhost:8090/realms/reto-backend}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

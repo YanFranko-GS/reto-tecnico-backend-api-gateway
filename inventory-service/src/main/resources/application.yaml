@@ -6,18 +6,26 @@ spring:
     name: inventory-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/inventory_db
-    username: root
-    password: root
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/inventory_db}
+    username: ${SPRING_DATASOURCE_USERNAME:inventory_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:inventory_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ##para que se pueda importar los datos de prueba
+      ddl-auto: create
     open-in-view: false
     properties:
       hibernate:
         format_sql: true
+
+  ## igual aqui tambien tenemos que proteger el servicio con oauth2
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://localhost:8090/realms/reto-backend}
 
 management:
   endpoints:
