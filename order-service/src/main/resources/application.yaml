@@ -5,15 +5,17 @@ spring:
   application:
     name: order-service
 
+  ## cambiabos las rutas que estaban en host a los enviroments del docker
   datasource:
-    url: jdbc:postgresql://localhost:5432/order_db
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/order_db}
+    username: ${SPRING_DATASOURCE_USERNAME:order_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:order_password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: 'create-drop'
+      ##para que se pueda importar los datos de prueba
+      ddl-auto: create
     open-in-view: false
     properties:
       hibernate:
@@ -24,11 +26,14 @@ spring:
     oauth2:
         resourceserver:
             jwt:
-              issuer-uri: http://localhost:8090/realms/reto-backend
+              issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://localhost:8090/realms/reto-backend}
 
 inventory:
   service:
-    url: http://localhost:8082
+    ##cambiamos la url por una condicional
+    ##url: http://localhost:8082
+    ##concordancia con el enviroment del docker
+    url: ${INVENTORY_SERVICE_URL:http://localhost:8082}
 
 management:
   endpoints:
