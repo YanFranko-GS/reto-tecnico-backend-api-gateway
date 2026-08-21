@@ -443,3 +443,17 @@ Y una petición sin JWT para comprobar:
 Las credenciales o las contraseñas que estan en este proyecto son visibles en cada archivo especifico, dicho esto no usarlo en produccion. 
 atentamente:
 Yan Franko Gonzales Segura
+
+## ⚠️ Nota Importante sobre la Conexión a la Base de Datos
+
+Si vas a probar o ejecutar este microservicio de forma manual en tu máquina local (fuera de Docker), ten en cuenta que el archivo `application.yml` está configurado por defecto con las credenciales estándar de MySQL:
+
+- **Usuario:** `root`
+- **Contraseña:** `root`
+
+Si tu motor de base de datos local utiliza credenciales diferentes, el proyecto arrojará un error de conexión al iniciar. Tienes dos opciones para solucionarlo:
+
+1. **Modificar el archivo `application.yml`** temporalmente con tu usuario y contraseña.
+2. **Usar Variables de Entorno** (Recomendado): El proyecto está preparado para recibir las credenciales sin modificar el código. Puedes inyectar las variables `SPRING_DATASOURCE_USERNAME` y `SPRING_DATASOURCE_PASSWORD` al ejecutar el servicio.
+
+**Nota sobre Docker:** Si decides levantar el proyecto utilizando el `docker-compose.yml` provisto, no necesitas hacer nada. El contenedor de la base de datos inicializará automáticamente con las credenciales específicas del entorno (ej. `inventory_user` / `inventory_password`) y el otro modulo "order" el servicio se conectará sin problemas.
