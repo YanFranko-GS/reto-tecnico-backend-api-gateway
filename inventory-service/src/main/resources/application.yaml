@@ -7,6 +7,13 @@ spring:
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/inventory_db}
+    ## estoy usando las credenciales de docker si lo quieres probar en tu maquina tienes que
+    ## poner las credenciales de tu motor de base de datos
+    ## ejemplo el mio es user: root, pass: root , ahi si me correo el modulo
+    ## pero tu de seguro lo veras como user: inventory_user , pass: inventory_password
+    ## haciendo referencia al modulo
+    ## solo queria dejar esto claro para que cuando lo pruebes no te bote error
+    ## igual lo voy a documentar en el readme en la parte ultima para dejarlo mas claro
     username: ${SPRING_DATASOURCE_USERNAME:inventory_user}
     password: ${SPRING_DATASOURCE_PASSWORD:inventory_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -14,7 +21,7 @@ spring:
   jpa:
     hibernate:
       ##para que se pueda importar los datos de prueba
-      ddl-auto: create
+      ddl-auto: 'create-drop'
     open-in-view: false
     properties:
       hibernate:
