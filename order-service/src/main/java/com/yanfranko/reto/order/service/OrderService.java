@@ -108,6 +108,8 @@ public class OrderService {
                                                         .razonCambio(
                                                                 "El pedido ha sido confirmado por disponibilidad de stock"
                                                         )
+                                                        //estoy añadiendo esto
+                                                        .traceId(traceId)
                                                         .build();
 
                                         orderStatusHistoryRepository.save(history);
@@ -152,7 +154,7 @@ public class OrderService {
     }
 
     // Cancela un pedido cuando el estado actual lo permite
-    public OrderResponseDto cancelarOrder(Long orderId) {
+    public OrderResponseDto cancelarOrder(Long orderId, String traceId) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
@@ -187,6 +189,7 @@ public class OrderService {
                 .nuevoEstado(OrderStatus.CANCELLED)
                 .fechaModificacion(now)
                 .razonCambio("El pedido ha sido cancelado")
+                .traceId(traceId)
                 .build();
 
         orderStatusHistoryRepository.save(history);
