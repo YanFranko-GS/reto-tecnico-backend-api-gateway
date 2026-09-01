@@ -31,6 +31,24 @@ public class GlobalExceptionHandler {
         );
     }
 
+    //manejo de errores de comunicacion
+    @ExceptionHandler(InventoryServiceUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleInventoryUnavailable(
+            InventoryServiceUnavailableException exception,
+            ServerWebExchange exchange
+    ){
+        return buildResponse(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                "INVENTORY_SERVICE_UNAVAILABLE",
+                exception.getMessage(),
+                exchange
+        );
+    }
+
+
+
+
+
     @ExceptionHandler(InvalidOrderTransitionException.class)
     public ResponseEntity<ErrorResponse> handleInvalidOrderTransition(
             InvalidOrderTransitionException exception,

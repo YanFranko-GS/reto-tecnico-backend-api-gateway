@@ -14,8 +14,11 @@ spring:
     ## haciendo referencia al modulo
     ## solo queria dejar esto claro para que cuando lo pruebes no te bote error
     ## igual lo voy a documentar en el readme en la parte ultima para dejarlo mas claro
-    username: ${SPRING_DATASOURCE_USERNAME:inventory_user}
-    password: ${SPRING_DATASOURCE_PASSWORD:inventory_password}
+
+
+    ##estoy cambiando la clave no olvidar
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

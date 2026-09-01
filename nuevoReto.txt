@@ -1,0 +1,19 @@
+“Imagínate que negocio te pide un cambio sobre lo que ya desarrollaste. Un cliente quiere volver a comprar
+exactamente lo mismo de un pedido anterior. Necesito que agregues una funcionalidad que, a partir del ID de un
+pedido existente, cree un pedido nuevo con los mismos productos y cantidades. Ese nuevo pedido tiene que volver
+a validar el inventario y el pedido original no debe modificarse.
+
+
+
+
+Quiero que lo integres respetando la arquitectura que ya tienes, que manejes correctamente los errores,
+por ejemplo si el pedido no existe, si no hay stock o si falla alguna comunicación, y que mantengas el
+manejo del X-Trace-Id. También agrega las pruebas unitarias que consideres necesarias para demostrar que
+la funcionalidad funciona y que no rompiste el comportamiento existente. Al final quiero que me muestres funcionando el flujo y me expliques el codigo
+
+
+
+
+
+Puedes utilizar IA, documentación o las herramientas que normalmente usarías para desarrollar. No te voy
+a indicar qué endpoint crear ni cómo implementarlo; esa parte queda a tu criterio.”

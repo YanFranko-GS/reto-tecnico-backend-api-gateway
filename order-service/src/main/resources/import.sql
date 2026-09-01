@@ -1,3 +1,4 @@
+
 INSERT INTO orders (cantidad, estado, fecha_creacion, fecha_modificacion, producto_id) VALUES (2, 'PENDING', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1);
 INSERT INTO orders (cantidad, estado, fecha_creacion, fecha_modificacion, producto_id) VALUES (3, 'CONFIRMED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2);
 INSERT INTO orders (cantidad, estado, fecha_creacion, fecha_modificacion, producto_id) VALUES (1, 'CANCELLED', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3);

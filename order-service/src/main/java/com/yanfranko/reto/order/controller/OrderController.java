@@ -62,6 +62,19 @@ public class OrderController {
                 .map(ResponseEntity::ok);
     }
 
+    // nuevo endpoint para el order de reordenar un pedido existente
+    @PostMapping("/{orderId}/reorder")
+    public Mono<ResponseEntity<OrderResponseDto>> reorder( @PathVariable Long orderId, @RequestHeader ("X-Trace-Id")
+    String traceId) {
+        return orderService.reorder(orderId, traceId)
+                .map(response ->
+                        ResponseEntity
+                                .status(HttpStatus.CREATED)
+                                .body(response)
+                );
+    }
+
+
     // Cancelar un pedido
     @PostMapping("/{orderId}/cancel")
     public Mono<ResponseEntity<OrderResponseDto>> cancelOrder(

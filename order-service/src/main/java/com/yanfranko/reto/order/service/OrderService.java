@@ -39,6 +39,30 @@ public class OrderService {
         this.orderStatusHistoryRepository = orderStatusHistoryRepository;
         this.inventoryClient = inventoryClient;
     }
+    ///////////////////////////////////////////
+
+    public Mono<OrderResponseDto> reorder(Long orderId, String traceId) {
+        return Mono.fromCallable(() -> orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId)))
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(order -> new CreateOrderRequestDto(
+                        order.getProductoId(),
+                        order.getCantidad()
+
+                ))
+                .flatMap(request -> createOrder(request, traceId));
+
+    }
+
+
+
+
+
+
+
+
+
+    ///////////////////////////////////////////
 
     // Crea un pedido verificando previamente la disponibilidad del producto
     //se aladio el x-trace-id

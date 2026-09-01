@@ -6,6 +6,7 @@ import com.yanfranko.reto.order.dto.order.OrderResponseDto;
 import com.yanfranko.reto.order.entity.Order;
 import com.yanfranko.reto.order.entity.enums.OrderStatus;
 import com.yanfranko.reto.order.exception.InvalidOrderTransitionException;
+import com.yanfranko.reto.order.exception.InventoryServiceUnavailableException;
 import com.yanfranko.reto.order.exception.OrderNotFoundException;
 import com.yanfranko.reto.order.exception.StockInsufficientException;
 import com.yanfranko.reto.order.repository.OrderRepository;
@@ -180,6 +181,59 @@ class OrderServiceTest {
 
         verify(orderStatusHistoryRepository, never())
                 .save(any());
+    }
+
+
+    //se agrego el test del nuevo reto
+    @Test
+    void deberiaFallarReordenCuandoInventoryServiceNoEstaDisponible() {
+
+        Order orderOriginal = Order.builder()
+                .orderId(1L)
+                .productoId(1L)
+                .cantidad(2)
+                .estado(OrderStatus.CONFIRMED)
+                .fechaCreacion(Instant.now())
+                .fechaModificacion(Instant.now())
+                .build();
+
+        when(orderRepository.findById(1L))
+                .thenReturn(Optional.of(orderOriginal));
+
+        when(inventoryClient.checkAvailability(
+                1L,
+                2,
+                "trace-reorder-004",
+                "token-prueba"
+        )).thenReturn(Mono.error(
+                new InventoryServiceUnavailableException(
+                        "Inventory Service no está disponible"
+                )
+        ));
+
+        Mono<OrderResponseDto> result = orderService.reorder(
+                1L,
+                "trace-reorder-004"
+        );
+
+        StepVerifier.create(
+                        result.contextWrite(
+                                ReactiveSecurityContextHolder
+                                        .withAuthentication(authentication)
+                        )
+                )
+                .expectError(InventoryServiceUnavailableException.class)
+                .verify();
+
+        verify(orderRepository).findById(1L);
+        verify(inventoryClient).checkAvailability(
+                1L,
+                2,
+                "trace-reorder-004",
+                "token-prueba"
+        );
+        verify(orderRepository, never()).save(any(Order.class));
+        verify(orderStatusHistoryRepository, never()).save(any());
     }
 
     @Test
